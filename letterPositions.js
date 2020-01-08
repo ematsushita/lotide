@@ -39,6 +39,5 @@ const letterPositions = function(str) {
   return results;
 };
 
-const results1 = letterPositions("hello");
 
-assertArraysEqual(results1["l"], [2, 3]);
+assertArraysEqual(letterPositions("hello").l, [2, 3])

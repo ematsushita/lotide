@@ -32,17 +32,34 @@ const eqObjects = function(object1, object2) {
     if (!(elem in object2)) {
       return false;
     } 
-    if (Array.isArray(object1[elem]) && Array.isArray(object2[elem])) {
+    else if ( typeof(object1[elem]) === "object" && !(Array.isArray(object1[elem])) && object1[elem] !== null ) {
+      if (!(eqObjects(object1[elem], object2[elem]))) {
+        return false;
+      }
+    }
+
+
+    else if (Array.isArray(object1[elem]) && Array.isArray(object2[elem])) {
       if (!(eqArrays(object1[elem], object2[elem]))) {
         return false;
       } 
-    } else if (object1[elem] !== object2[elem]){
+    } else {
+      if (object1[elem] !== object2[elem]) { 
       return false;
+      }
     }
   }
   return true;
 };
 
+
+
+assertEqual(eqObjects({ a: { z: 1 }, b: 2 }, { a: { z: 1 }, b: 2 }), true); // => true
+assertEqual(eqObjects({ a: { y: 0, z: 1 }, b: 2 }, { a: { z: 1 }, b: 2 }), false); // => false
+assertEqual(eqObjects({ a: { y: 0, z: 1 }, b: 2 }, { a: 1, b: 2 }), false); // => false
+
+
+/*
 const cd = { c: "1", d: ["2", 3] };
 const dc = { d: ["2", 3], c: "1" };
 eqObjects(cd, dc); // => true
@@ -52,3 +69,4 @@ eqObjects(cd, cd2); // => false
 
 assertEqual(eqObjects(cd, dc), true);
 assertEqual(eqObjects(cd, cd2), false);
+*/
